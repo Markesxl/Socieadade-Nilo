@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Sociedade Parque Nilo dos Santos</title>
+    <title>Sociedade Parque Nilo dos Santos</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -18,74 +18,164 @@
         }
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fc;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        /* Cores baseadas em brasão: azul marinho (#0A2342) e dourado (#C9A53B) */
+        :root {
+            --primary-dark: #0A2342;
+            --primary-light: #1C3A5F;
+            --accent-gold: #C9A53B;
+            --accent-gold-light: #E5C76B;
+            --bg-light: #F8F9FA;
+            --text-dark: #2C3E50;
+            --text-light: #FFFFFF;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
         #sidebar-wrapper {
             min-height: 100vh;
-            background: linear-gradient(180deg, #2c3e50 0%, #1a2634 100%);
-            transition: margin 0.25s ease-out;
+            background: linear-gradient(180deg, var(--primary-dark) 0%, var(--primary-light) 100%);
+            width: 260px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+        }
+        #sidebar-wrapper .sidebar-heading {
+            color: var(--accent-gold);
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--accent-gold);
+            padding: 20px 0;
+            margin-bottom: 10px;
+            text-transform: uppercase;
         }
         #sidebar-wrapper .list-group-item {
             border: none;
-            padding: 12px 20px;
+            padding: 14px 20px;
             font-size: 1rem;
             transition: 0.3s;
             background-color: transparent;
-            color: white;
+            color: var(--text-light);
+            font-weight: 400;
+            border-left: 4px solid transparent;
+        }
+        #sidebar-wrapper .list-group-item i {
+            width: 24px;
+            color: var(--accent-gold-light);
         }
         #sidebar-wrapper .list-group-item:hover {
-            background-color: #34495e !important;
-            color: white !important;
-            padding-left: 30px;
+            background-color: rgba(255,255,255,0.1);
+            border-left: 4px solid var(--accent-gold);
+            padding-left: 25px;
         }
         #page-content-wrapper {
-            min-width: 0;
+            flex: 1;
+            background-color: var(--bg-light);
+        }
+        .navbar-custom {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            padding: 15px 20px;
+            position: relative;
+        }
+        .navbar-custom .society-name {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: var(--primary-dark);
+            text-align: center;
             width: 100%;
+            margin: 0;
+            letter-spacing: 1px;
         }
-        #menu-toggle {
-            background-color: #2c3e50;
-            border: none;
-        }
-        .primary-text {
-            color: #4e73df;
+        .navbar-custom .society-name span {
+            color: var(--accent-gold);
+            font-weight: 900;
         }
         .card {
             border: none;
-            border-radius: 10px;
-            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+        .card-header {
+            background: white;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 15px 20px;
+            font-weight: 600;
+            color: var(--primary-dark);
+            font-size: 1.2rem;
         }
         .btn-primary {
-            background-color: #4e73df;
-            border-color: #4e73df;
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transition: all 0.3s;
         }
         .btn-primary:hover {
-            background-color: #2e59d9;
-            border-color: #2653d4;
+            background-color: var(--primary-light);
+            border-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
-        .sidebar-heading {
-            color: #fff;
+        .btn-gold {
+            background-color: var(--accent-gold);
+            border-color: var(--accent-gold);
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+        .btn-gold:hover {
+            background-color: var(--accent-gold-light);
+            border-color: var(--accent-gold-light);
+            color: var(--primary-dark);
         }
         .foto-thumb {
             width: 40px;
             height: 40px;
             object-fit: cover;
-            border-radius: 5px;
+            border-radius: 8px;
+            border: 2px solid var(--accent-gold-light);
         }
-        .navbar-brand-centered {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
+        .badge-active {
+            background-color: #28a745;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        .badge-inactive {
+            background-color: #6c757d;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        .table thead th {
+            border-bottom: 2px solid var(--accent-gold);
+            color: var(--primary-dark);
             font-weight: 600;
-            color: #2c3e50;
+        }
+        .table tbody tr:hover {
+            background-color: rgba(201, 165, 59, 0.05);
+        }
+        .action-btn {
+            margin: 0 3px;
+        }
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            font-weight: 700;
+            border-left: 6px solid var(--accent-gold);
+            padding-left: 15px;
         }
     </style>
 </head>
 <body>
-    <div class="d-flex" id="wrapper">
-        <!-- Sidebar -->
-        <div class="text-white" id="sidebar-wrapper" style="min-width: 250px;">
-            <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom">Menu</div>
-            <div class="list-group list-group-flush my-3">
+    <div class="d-flex">
+        <!-- Sidebar fixa -->
+        <div id="sidebar-wrapper">
+            <div class="sidebar-heading text-center">Menu</div>
+            <div class="list-group list-group-flush">
                 <a href="#" class="list-group-item list-group-item-action" id="link-home"><i class="fas fa-home me-2"></i>Home</a>
                 <a href="#" class="list-group-item list-group-item-action" id="link-cadastro"><i class="fas fa-user-plus me-2"></i>Cadastro de Sócios</a>
                 <a href="#" class="list-group-item list-group-item-action" id="link-mensalidades"><i class="fas fa-money-bill me-2"></i>Mensalidades</a>
@@ -95,19 +185,20 @@
         </div>
         <!-- Page Content -->
         <div id="page-content-wrapper" class="w-100">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom position-relative">
+            <nav class="navbar navbar-custom">
                 <div class="container-fluid">
-                    <button class="btn btn-primary" id="menu-toggle"><i class="fas fa-bars"></i></button>
-                    <span class="navbar-brand-centered">Sociedade Parque Nilo dos Santos</span>
+                    <div class="society-name"><span>Parque</span> Nilo dos Santos</div>
                 </div>
             </nav>
-            <div class="container-fluid px-4" id="content-area">
-                <!-- Conteúdo dinâmico será inserido aqui via JavaScript -->
+            <div class="container-fluid px-4 py-3">
+                <div id="content-area">
+                    <!-- Conteúdo dinâmico -->
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Scripts (bibliotecas e nosso código) -->
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -131,7 +222,7 @@
                 return socios.find(s => s.id === id);
             }
 
-            // Função para gerar novo ID sequencial começando em 1
+            // Gerar novo ID sequencial começando em 1
             function gerarNovoId() {
                 if (socios.length === 0) return 1;
                 const ids = socios.map(s => s.id);
@@ -162,56 +253,54 @@
                 }
             }
 
-            // ---------- HOME (ex-Dashboard) com foto do membro ----------
+            // ---------- HOME (com foto) ----------
             function gerarHome() {
                 let html = `
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h5>Sócios Cadastrados</h5>
-                                    <button class="btn btn-primary btn-sm" id="btn-novo-socio">Novo Sócio</button>
-                                </div>
-                                <div class="card-body">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>Foto</th>
-                                                <th>ID</th>
-                                                <th>Nome</th>
-                                                <th>CPF</th>
-                                                <th>Classificação</th>
-                                                <th>Situação</th>
-                                                <th>Ações</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                    <h2 class="page-title">Sócios Cadastrados</h2>
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>Lista de Sócios</span>
+                            <button class="btn btn-primary btn-sm" id="btn-novo-socio"><i class="fas fa-plus me-1"></i>Novo Sócio</button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Foto</th>
+                                            <th>ID</th>
+                                            <th>Nome</th>
+                                            <th>CPF</th>
+                                            <th>Classificação</th>
+                                            <th>Situação</th>
+                                            <th>Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
                 `;
                 socios.forEach(s => {
                     html += `
                         <tr>
                             <td>${s.foto ? `<img src="${s.foto}" class="foto-thumb">` : '<i class="fas fa-user-circle fa-2x text-secondary"></i>'}</td>
-                            <td>${s.id}</td>
+                            <td><span class="badge bg-dark">${s.id}</span></td>
                             <td>${s.nomeCompleto || ''}</td>
                             <td>${s.cpf || ''}</td>
                             <td>${s.classificacao || ''}</td>
-                            <td><span class="badge ${s.situacao === 'Ativo' ? 'bg-success' : 'bg-secondary'}">${s.situacao || ''}</span></td>
+                            <td><span class="badge ${s.situacao === 'Ativo' ? 'badge-active' : 'badge-inactive'}">${s.situacao || ''}</span></td>
                             <td>
-                                <button class="btn btn-sm btn-warning" onclick="editarSocio(${s.id})"><i class="fas fa-edit"></i></button>
-                                <button class="btn btn-sm btn-danger" onclick="excluirSocio(${s.id})"><i class="fas fa-trash"></i></button>
+                                <button class="btn btn-sm btn-warning action-btn" onclick="editarSocio(${s.id})"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-sm btn-danger action-btn" onclick="excluirSocio(${s.id})"><i class="fas fa-trash"></i></button>
                             </td>
                         </tr>
                     `;
                 });
                 html += `
-                                        </tbody>
-                                    </table>
-                                </div>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 `;
-                // Após inserir o HTML, adicionar evento ao botão "Novo Sócio"
                 setTimeout(() => {
                     document.getElementById('btn-novo-socio')?.addEventListener('click', () => {
                         carregarConteudo('cadastro');
@@ -233,7 +322,7 @@
                 }
             };
 
-            // ---------- FORMULÁRIO DE CADASTRO (com novo campo Presidente que filiou) ----------
+            // ---------- FORMULÁRIO DE CADASTRO ----------
             function gerarFormularioCadastro(socio = null) {
                 const isEdicao = socio !== null;
                 const title = isEdicao ? 'Editar Sócio' : 'Novo Sócio';
@@ -244,10 +333,8 @@
                 }
 
                 return `
-                    <div class="card mt-4">
-                        <div class="card-header">
-                            <h5>${title}</h5>
-                        </div>
+                    <h2 class="page-title">${title}</h2>
+                    <div class="card">
                         <div class="card-body">
                             <form id="form-socio">
                                 <input type="hidden" id="socio-id" value="${isEdicao ? socio.id : ''}">
@@ -263,7 +350,7 @@
                                     <div class="col-md-3 mb-3">
                                         <label for="foto" class="form-label">Foto 3x4</label>
                                         <input type="file" class="form-control" id="foto" accept="image/*">
-                                        ${socio && socio.foto ? '<img src="' + socio.foto + '" alt="foto" style="width: 50px; height: 50px; object-fit: cover; margin-top: 5px;">' : ''}
+                                        ${socio && socio.foto ? '<img src="' + socio.foto + '" alt="foto" style="width: 50px; height: 50px; object-fit: cover; margin-top: 5px; border-radius: 5px;">' : ''}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -396,7 +483,6 @@
                 `;
             }
 
-            // Event listener para o formulário de cadastro
             document.addEventListener('submit', function(e) {
                 if (e.target && e.target.id === 'form-socio') {
                     e.preventDefault();
@@ -490,38 +576,35 @@
                 }
             }
 
-            // ---------- MENSALIDADES (igual, mas ajustado para chamadas globais) ----------
+            // ---------- MENSALIDADES ----------
             function gerarTelaMensalidades() {
                 let html = `
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>Controle de Mensalidades</h5>
-                                </div>
-                                <div class="card-body">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Sócio</th>
-                                                <th>Ações</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                    <h2 class="page-title">Controle de Mensalidades</h2>
+                    <div class="card">
+                        <div class="card-header">
+                            Selecione um sócio para gerenciar
+                        </div>
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Sócio</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
                 `;
                 socios.forEach(s => {
                     html += `
                         <tr>
                             <td>${s.nomeCompleto}</td>
-                            <td><button class="btn btn-sm btn-primary" onclick="gerenciarMensalidades(${s.id})">Gerenciar</button></td>
+                            <td><button class="btn btn-sm btn-primary" onclick="gerenciarMensalidades(${s.id})"><i class="fas fa-cog me-1"></i>Gerenciar</button></td>
                         </tr>
                     `;
                 });
                 html += `
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 `;
@@ -531,48 +614,50 @@
             window.gerenciarMensalidades = function(id) {
                 const socio = buscarSocioPorId(id);
                 let html = `
-                    <div class="card mt-4">
+                    <h2 class="page-title">Mensalidades de ${socio.nomeCompleto}</h2>
+                    <div class="card">
                         <div class="card-header d-flex justify-content-between">
-                            <h5>Mensalidades de ${socio.nomeCompleto}</h5>
-                            <button class="btn btn-secondary btn-sm" onclick="carregarConteudo('mensalidades')">Voltar</button>
+                            <span>Lançar Mensalidade</span>
+                            <button class="btn btn-secondary btn-sm" onclick="carregarConteudo('mensalidades')"><i class="fas fa-arrow-left me-1"></i>Voltar</button>
                         </div>
                         <div class="card-body">
                             <form id="form-mensalidade">
                                 <input type="hidden" id="socio-id-mensalidade" value="${socio.id}">
-                                <div class="row">
+                                <div class="row g-3 align-items-end">
                                     <div class="col-md-3">
-                                        <label>Mês/Ano</label>
+                                        <label class="form-label">Mês/Ano</label>
                                         <input type="month" class="form-control" id="mesAno" required>
                                     </div>
                                     <div class="col-md-3">
-                                        <label>Valor (R$)</label>
+                                        <label class="form-label">Valor (R$)</label>
                                         <input type="number" step="0.01" class="form-control" id="valorMensalidade" required>
                                     </div>
                                     <div class="col-md-3">
-                                        <label>Pago?</label>
+                                        <label class="form-label">Pago?</label>
                                         <select class="form-select" id="pagoMensalidade">
                                             <option value="false">Não</option>
                                             <option value="true">Sim</option>
                                         </select>
                                     </div>
-                                    <div class="col-md-3 align-self-end">
-                                        <button type="submit" class="btn btn-primary">Lançar</button>
+                                    <div class="col-md-3">
+                                        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-save me-1"></i>Lançar</button>
                                     </div>
                                 </div>
                             </form>
                             <hr>
-                            <h6>Mensalidades lançadas</h6>
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Mês/Ano</th>
-                                        <th>Valor</th>
-                                        <th>Pago</th>
-                                        <th>Data Pagamento</th>
-                                        <th>Comprovante</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tabela-mensalidades">
+                            <h5 class="mt-4">Mensalidades Lançadas</h5>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Mês/Ano</th>
+                                            <th>Valor</th>
+                                            <th>Pago</th>
+                                            <th>Data Pagamento</th>
+                                            <th>Comprovante</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tabela-mensalidades">
                 `;
 
                 if (socio.mensalidades) {
@@ -581,17 +666,18 @@
                             <tr>
                                 <td>${m.mesAno}</td>
                                 <td>R$ ${m.valor.toFixed(2)}</td>
-                                <td>${m.pago ? 'Sim' : 'Não'}</td>
+                                <td>${m.pago ? '<span class="badge bg-success">Pago</span>' : '<span class="badge bg-warning">Pendente</span>'}</td>
                                 <td>${m.dataPagamento || ''}</td>
-                                <td>${m.pago ? `<button class="btn btn-sm btn-success" onclick="gerarComprovante(${socio.id}, '${m.mesAno}')">PDF</button>` : ''}</td>
+                                <td>${m.pago ? `<button class="btn btn-sm btn-gold" onclick="gerarComprovante(${socio.id}, '${m.mesAno}')"><i class="fas fa-file-pdf me-1"></i>PDF</button>` : ''}</td>
                             </tr>
                         `;
                     });
                 }
 
                 html += `
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -632,52 +718,78 @@
                 if (!mensalidade) return;
 
                 const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
-                doc.setFontSize(18);
-                doc.text('Comprovante de Pagamento', 20, 20);
+                const doc = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+
+                // Estilo do comprovante
+                doc.setFillColor(10, 35, 66); // #0A2342
+                doc.rect(0, 0, 210, 40, 'F');
+                doc.setTextColor(201, 165, 59); // dourado
+                doc.setFontSize(24);
+                doc.setFont('helvetica', 'bold');
+                doc.text('Comprovante de Pagamento', 105, 25, { align: 'center' });
+
+                doc.setTextColor(0, 0, 0);
                 doc.setFontSize(12);
-                doc.text(`Sociedade Recreativa Parque Nilo dos Santos`, 20, 30);
-                doc.text(`Sócio: ${socio.nomeCompleto}`, 20, 40);
-                doc.text(`Mês/Ano: ${mesAno}`, 20, 50);
-                doc.text(`Valor: R$ ${mensalidade.valor.toFixed(2)}`, 20, 60);
-                doc.text(`Data do Pagamento: ${mensalidade.dataPagamento}`, 20, 70);
-                doc.text('Status: PAGO', 20, 80);
-                doc.text('Assinatura: __________________________', 20, 100);
+                doc.setFont('helvetica', 'normal');
+                doc.text(`Sociedade Recreativa Parque Nilo dos Santos`, 105, 50, { align: 'center' });
+                doc.line(20, 55, 190, 55);
+
+                doc.setFontSize(14);
+                doc.setFont('helvetica', 'bold');
+                doc.text('Dados do Pagamento', 20, 70);
+
+                doc.setFontSize(12);
+                doc.setFont('helvetica', 'normal');
+                doc.text(`Sócio: ${socio.nomeCompleto}`, 20, 85);
+                doc.text(`CPF: ${socio.cpf || '---'}`, 20, 95);
+                doc.text(`Mês/Ano: ${mesAno}`, 20, 105);
+                doc.text(`Valor: R$ ${mensalidade.valor.toFixed(2)}`, 20, 115);
+                doc.text(`Data do Pagamento: ${mensalidade.dataPagamento}`, 20, 125);
+                doc.text('Status: PAGO', 20, 135);
+
+                doc.setDrawColor(201, 165, 59);
+                doc.setLineWidth(0.5);
+                doc.line(20, 145, 190, 145);
+
+                doc.text('Assinatura: __________________________', 20, 160);
+                doc.text('Carimbo da Sociedade', 150, 160);
+
                 doc.save(`comprovante_${socio.nomeCompleto}_${mesAno}.pdf`);
             };
 
-            // ---------- CARTEIRINHA (com dimensões de cartão de crédito) ----------
+            // ---------- CARTEIRINHA (PDF A4 com carteirinha no tamanho de cartão de crédito) ----------
             function gerarTelaCarteirinha() {
                 let html = `
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>Gerar Carteirinha</h5>
-                                </div>
-                                <div class="card-body">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Sócio</th>
-                                                <th>Ações</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                    <h2 class="page-title">Gerar Carteirinha</h2>
+                    <div class="card">
+                        <div class="card-header">
+                            Selecione um sócio
+                        </div>
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Sócio</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
                 `;
                 socios.forEach(s => {
                     html += `
                         <tr>
                             <td>${s.nomeCompleto}</td>
-                            <td><button class="btn btn-sm btn-primary" onclick="gerarCarteirinha(${s.id})">Gerar Carteirinha</button></td>
+                            <td><button class="btn btn-sm btn-primary" onclick="gerarCarteirinha(${s.id})"><i class="fas fa-id-card me-1"></i>Gerar Carteirinha</button></td>
                         </tr>
                     `;
                 });
                 html += `
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 `;
@@ -686,38 +798,36 @@
 
             window.gerarCarteirinha = function(socioId) {
                 const socio = buscarSocioPorId(socioId);
-                // Dimensões do cartão de crédito (CR80) em mm: 85.6mm x 53.98mm
-                // Vamos criar um elemento com essas dimensões em pixels (considerando 96 DPI: 1mm = 3.78px aproximadamente)
-                const widthMm = 85.6;
-                const heightMm = 53.98;
-                const pxPerMm = 3.78; // 96 DPI / 25.4
-                const widthPx = Math.round(widthMm * pxPerMm);
-                const heightPx = Math.round(heightMm * pxPerMm);
+                // Dimensões do cartão de crédito em mm: 85.6mm x 53.98mm
+                const cardWidth = 85.6;
+                const cardHeight = 53.98;
 
+                // Criar elemento temporário para a carteirinha (fora da tela)
                 const carteirinhaDiv = document.createElement('div');
                 carteirinhaDiv.id = 'carteirinha-temp';
-                carteirinhaDiv.style.width = widthPx + 'px';
-                carteirinhaDiv.style.height = heightPx + 'px';
-                carteirinhaDiv.style.padding = '5px';
-                carteirinhaDiv.style.border = '2px solid #000';
-                carteirinhaDiv.style.borderRadius = '10px';
+                carteirinhaDiv.style.width = cardWidth + 'mm';
+                carteirinhaDiv.style.height = cardHeight + 'mm';
+                carteirinhaDiv.style.padding = '3mm';
+                carteirinhaDiv.style.border = '2px solid #C9A53B';
+                carteirinhaDiv.style.borderRadius = '3mm';
                 carteirinhaDiv.style.backgroundColor = '#fff';
                 carteirinhaDiv.style.fontFamily = 'Poppins, sans-serif';
-                carteirinhaDiv.style.fontSize = '10px';
+                carteirinhaDiv.style.fontSize = '10pt';
                 carteirinhaDiv.style.display = 'flex';
                 carteirinhaDiv.style.flexDirection = 'column';
                 carteirinhaDiv.style.justifyContent = 'center';
                 carteirinhaDiv.style.alignItems = 'center';
+                carteirinhaDiv.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
                 carteirinhaDiv.style.position = 'fixed';
                 carteirinhaDiv.style.top = '-1000px';
                 carteirinhaDiv.style.left = '-1000px';
                 carteirinhaDiv.innerHTML = `
                     <div style="text-align: center; width: 100%;">
-                        <h3 style="font-size: 14px; margin: 0;">Sociedade Recreativa</h3>
-                        <h4 style="font-size: 12px; margin: 0;">Parque Nilo dos Santos</h4>
-                        <hr style="margin: 5px 0;">
-                        ${socio.foto ? `<img src="${socio.foto}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 5px;">` : '<div style="width:40px;height:40px;background:#ccc;margin:auto;">Sem Foto</div>'}
-                        <p style="margin: 2px 0;"><strong>${socio.nomeCompleto}</strong></p>
+                        <h3 style="font-size: 14pt; margin: 0; color: #0A2342;">Sociedade Recreativa</h3>
+                        <h4 style="font-size: 12pt; margin: 2px 0; color: #C9A53B;">Parque Nilo dos Santos</h4>
+                        <hr style="margin: 3px 0; border-color: #C9A53B;">
+                        ${socio.foto ? `<img src="${socio.foto}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 5px; border: 2px solid #C9A53B;">` : '<div style="width:40px;height:40px;background:#ccc;margin:auto; border-radius:5px;"><i class="fas fa-user-circle fa-3x" style="color:#666;"></i></div>'}
+                        <p style="margin: 3px 0; font-weight: bold; font-size: 11pt;">${socio.nomeCompleto}</p>
                         <p style="margin: 2px 0;">CPF: ${socio.cpf || '---'}</p>
                         <p style="margin: 2px 0;">Nº ${socio.id}</p>
                         <p style="margin: 2px 0;">Validade: ${new Date().getFullYear() + 1}</p>
@@ -726,45 +836,59 @@
                 document.body.appendChild(carteirinhaDiv);
 
                 html2canvas(carteirinhaDiv, {
-                    scale: 2, // Melhor qualidade
+                    scale: 3, // alta resolução
                     backgroundColor: '#ffffff'
                 }).then(canvas => {
                     const imgData = canvas.toDataURL('image/png');
                     const { jsPDF } = window.jspdf;
-                    // Criar PDF com as dimensões exatas em mm
+                    // Criar PDF A4 (210mm x 297mm)
                     const pdf = new jsPDF({
                         orientation: 'portrait',
                         unit: 'mm',
-                        format: [widthMm, heightMm]
+                        format: 'a4'
                     });
-                    pdf.addImage(imgData, 'PNG', 0, 0, widthMm, heightMm);
+
+                    // Calcular posição para centralizar a carteirinha no A4
+                    const x = (210 - cardWidth) / 2;
+                    const y = (297 - cardHeight) / 2;
+
+                    // Adicionar fundo suave
+                    pdf.setFillColor(245, 245, 245);
+                    pdf.rect(0, 0, 210, 297, 'F');
+
+                    // Adicionar a imagem da carteirinha
+                    pdf.addImage(imgData, 'PNG', x, y, cardWidth, cardHeight);
+
+                    // Adicionar borda decorativa (opcional)
+                    pdf.setDrawColor(201, 165, 59);
+                    pdf.setLineWidth(0.5);
+                    pdf.rect(x-1, y-1, cardWidth+2, cardHeight+2);
+
                     pdf.save(`carteirinha_${socio.nomeCompleto}.pdf`);
 
                     document.body.removeChild(carteirinhaDiv);
                 });
             };
 
-            // ---------- RELATÓRIOS (corrigido para exibir resultados) ----------
+            // ---------- RELATÓRIOS COM BOTÃO PDF ----------
             function gerarTelaRelatorios() {
                 return `
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>Relatórios</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="btn-group mb-3" role="group">
-                                        <button class="btn btn-outline-primary" onclick="filtrarSocios('todos')">Todos</button>
-                                        <button class="btn btn-outline-success" onclick="filtrarSocios('adimplentes')">Adimplentes</button>
-                                        <button class="btn btn-outline-danger" onclick="filtrarSocios('inadimplentes')">Inadimplentes</button>
-                                        <button class="btn btn-outline-info" onclick="filtrarSocios('ativos')">Ativos</button>
-                                        <button class="btn btn-outline-secondary" onclick="filtrarSocios('inativos')">Inativos</button>
-                                    </div>
-                                    <div id="resultado-relatorio">
-                                        <!-- Resultado do filtro será inserido aqui -->
-                                    </div>
-                                </div>
+                    <h2 class="page-title">Relatórios</h2>
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>Filtros</span>
+                            <button class="btn btn-gold btn-sm" id="btn-relatorio-pdf"><i class="fas fa-file-pdf me-1"></i>Gerar PDF do Relatório Atual</button>
+                        </div>
+                        <div class="card-body">
+                            <div class="btn-group mb-3" role="group">
+                                <button class="btn btn-outline-primary" onclick="filtrarSocios('todos')">Todos</button>
+                                <button class="btn btn-outline-success" onclick="filtrarSocios('adimplentes')">Adimplentes</button>
+                                <button class="btn btn-outline-danger" onclick="filtrarSocios('inadimplentes')">Inadimplentes</button>
+                                <button class="btn btn-outline-info" onclick="filtrarSocios('ativos')">Ativos</button>
+                                <button class="btn btn-outline-secondary" onclick="filtrarSocios('inativos')">Inativos</button>
+                            </div>
+                            <div id="resultado-relatorio">
+                                <!-- Resultado do filtro será inserido aqui -->
                             </div>
                         </div>
                     </div>
@@ -805,18 +929,20 @@
                 }
 
                 let html = `
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Nome</th>
-                                <th>Classificação</th>
-                                <th>Situação</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                    <div class="table-responsive">
+                        <table class="table" id="relatorio-table">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Classificação</th>
+                                    <th>Situação</th>
+                                    <th>CPF</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                 `;
                 if (listaFiltrada.length === 0) {
-                    html += `<tr><td colspan="3" class="text-center">Nenhum sócio encontrado.</td></tr>`;
+                    html += `<tr><td colspan="4" class="text-center">Nenhum sócio encontrado.</td></tr>`;
                 } else {
                     listaFiltrada.forEach(s => {
                         html += `
@@ -824,14 +950,76 @@
                                 <td>${s.nomeCompleto}</td>
                                 <td>${s.classificacao || ''}</td>
                                 <td>${s.situacao || ''}</td>
+                                <td>${s.cpf || ''}</td>
                             </tr>
                         `;
                     });
                 }
                 html += `</tbody></table>`;
+                html += `<p><strong>Total: ${listaFiltrada.length} sócio(s)</strong></p>`;
 
                 document.getElementById('resultado-relatorio').innerHTML = html;
+
+                // Adicionar evento ao botão de PDF (só uma vez)
+                document.getElementById('btn-relatorio-pdf')?.addEventListener('click', function() {
+                    gerarRelatorioPDF(listaFiltrada, tipo);
+                });
             };
+
+            function gerarRelatorioPDF(lista, tipo) {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+
+                // Cabeçalho
+                doc.setFillColor(10, 35, 66);
+                doc.rect(0, 0, 210, 40, 'F');
+                doc.setTextColor(201, 165, 59);
+                doc.setFontSize(20);
+                doc.setFont('helvetica', 'bold');
+                doc.text('Relatório de Sócios', 105, 25, { align: 'center' });
+
+                doc.setTextColor(0, 0, 0);
+                doc.setFontSize(12);
+                doc.setFont('helvetica', 'normal');
+                doc.text(`Sociedade Recreativa Parque Nilo dos Santos`, 105, 50, { align: 'center' });
+                doc.text(`Filtro: ${tipo}`, 105, 60, { align: 'center' });
+                doc.text(`Data: ${new Date().toLocaleDateString()}`, 105, 70, { align: 'center' });
+
+                // Tabela
+                let y = 85;
+                doc.setFontSize(10);
+                doc.setFont('helvetica', 'bold');
+                doc.text('Nome', 15, y);
+                doc.text('Classificação', 80, y);
+                doc.text('Situação', 130, y);
+                doc.text('CPF', 170, y);
+                y += 5;
+                doc.line(15, y, 195, y);
+                y += 5;
+
+                doc.setFont('helvetica', 'normal');
+                lista.forEach((s, index) => {
+                    if (y > 280) {
+                        doc.addPage();
+                        y = 20;
+                    }
+                    doc.text(s.nomeCompleto || '', 15, y);
+                    doc.text(s.classificacao || '', 80, y);
+                    doc.text(s.situacao || '', 130, y);
+                    doc.text(s.cpf || '', 170, y);
+                    y += 8;
+                });
+
+                // Rodapé
+                doc.setFontSize(10);
+                doc.text(`Total de sócios: ${lista.length}`, 15, y+5);
+
+                doc.save(`relatorio_${tipo}.pdf`);
+            }
 
             // ---------- EVENTOS DE MENU ----------
             document.getElementById('link-home').addEventListener('click', (e) => {
@@ -853,16 +1041,6 @@
             document.getElementById('link-carteirinha').addEventListener('click', (e) => {
                 e.preventDefault();
                 carregarConteudo('carteirinha');
-            });
-
-            // Menu toggle para dispositivos móveis
-            document.getElementById('menu-toggle').addEventListener('click', function() {
-                const sidebar = document.getElementById('sidebar-wrapper');
-                if (sidebar.style.marginLeft === '-250px') {
-                    sidebar.style.marginLeft = '0';
-                } else {
-                    sidebar.style.marginLeft = '-250px';
-                }
             });
 
             // Iniciar com home
