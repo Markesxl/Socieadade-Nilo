@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Sociedade Recreativa Parque Nilo dos Santos</title>
+    <title>Home - Sociedade Parque Nilo dos Santos</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -65,15 +65,28 @@
         .sidebar-heading {
             color: #fff;
         }
+        .foto-thumb {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .navbar-brand-centered {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: 600;
+            color: #2c3e50;
+        }
     </style>
 </head>
 <body>
     <div class="d-flex" id="wrapper">
         <!-- Sidebar -->
         <div class="text-white" id="sidebar-wrapper" style="min-width: 250px;">
-            <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom">Sociedade</div>
+            <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom">Menu</div>
             <div class="list-group list-group-flush my-3">
-                <a href="#" class="list-group-item list-group-item-action" id="link-dashboard"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
+                <a href="#" class="list-group-item list-group-item-action" id="link-home"><i class="fas fa-home me-2"></i>Home</a>
                 <a href="#" class="list-group-item list-group-item-action" id="link-cadastro"><i class="fas fa-user-plus me-2"></i>Cadastro de Sócios</a>
                 <a href="#" class="list-group-item list-group-item-action" id="link-mensalidades"><i class="fas fa-money-bill me-2"></i>Mensalidades</a>
                 <a href="#" class="list-group-item list-group-item-action" id="link-relatorios"><i class="fas fa-chart-bar me-2"></i>Relatórios</a>
@@ -82,10 +95,10 @@
         </div>
         <!-- Page Content -->
         <div id="page-content-wrapper" class="w-100">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom position-relative">
                 <div class="container-fluid">
                     <button class="btn btn-primary" id="menu-toggle"><i class="fas fa-bars"></i></button>
-                    <h4 class="ms-3" id="page-title">Dashboard</h4>
+                    <span class="navbar-brand-centered">Sociedade Parque Nilo dos Santos</span>
                 </div>
             </nav>
             <div class="container-fluid px-4" id="content-area">
@@ -99,9 +112,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
-        // ---------- INÍCIO DO CÓDIGO PRINCIPAL ----------
         (function() {
-            // Variável global de sócios
             let socios = [];
 
             // Carregar dados do localStorage
@@ -120,51 +131,52 @@
                 return socios.find(s => s.id === id);
             }
 
-            // Função para renderizar conteúdo conforme o link clicado
+            // Função para gerar novo ID sequencial começando em 1
+            function gerarNovoId() {
+                if (socios.length === 0) return 1;
+                const ids = socios.map(s => s.id);
+                return Math.max(...ids) + 1;
+            }
+
+            // Função para renderizar conteúdo
             function carregarConteudo(secao, socio = null) {
                 const contentArea = document.getElementById('content-area');
-                const pageTitle = document.getElementById('page-title');
                 switch(secao) {
-                    case 'dashboard':
-                        pageTitle.innerText = 'Dashboard';
-                        contentArea.innerHTML = gerarDashboard();
+                    case 'home':
+                        contentArea.innerHTML = gerarHome();
                         break;
                     case 'cadastro':
-                        pageTitle.innerText = socio ? 'Editar Sócio' : 'Novo Sócio';
                         contentArea.innerHTML = gerarFormularioCadastro(socio);
                         break;
                     case 'mensalidades':
-                        pageTitle.innerText = 'Controle de Mensalidades';
                         contentArea.innerHTML = gerarTelaMensalidades();
                         break;
                     case 'relatorios':
-                        pageTitle.innerText = 'Relatórios';
                         contentArea.innerHTML = gerarTelaRelatorios();
                         break;
                     case 'carteirinha':
-                        pageTitle.innerText = 'Gerar Carteirinha';
                         contentArea.innerHTML = gerarTelaCarteirinha();
                         break;
                     default:
-                        pageTitle.innerText = 'Dashboard';
-                        contentArea.innerHTML = gerarDashboard();
+                        contentArea.innerHTML = gerarHome();
                 }
             }
 
-            // ---------- DASHBOARD (LISTAGEM DE SÓCIOS) ----------
-            function gerarDashboard() {
+            // ---------- HOME (ex-Dashboard) com foto do membro ----------
+            function gerarHome() {
                 let html = `
                     <div class="row mt-4">
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                     <h5>Sócios Cadastrados</h5>
-                                    <button class="btn btn-primary btn-sm" onclick="carregarConteudo('cadastro')">Novo Sócio</button>
+                                    <button class="btn btn-primary btn-sm" id="btn-novo-socio">Novo Sócio</button>
                                 </div>
                                 <div class="card-body">
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
+                                                <th>Foto</th>
                                                 <th>ID</th>
                                                 <th>Nome</th>
                                                 <th>CPF</th>
@@ -178,6 +190,7 @@
                 socios.forEach(s => {
                     html += `
                         <tr>
+                            <td>${s.foto ? `<img src="${s.foto}" class="foto-thumb">` : '<i class="fas fa-user-circle fa-2x text-secondary"></i>'}</td>
                             <td>${s.id}</td>
                             <td>${s.nomeCompleto || ''}</td>
                             <td>${s.cpf || ''}</td>
@@ -198,6 +211,12 @@
                         </div>
                     </div>
                 `;
+                // Após inserir o HTML, adicionar evento ao botão "Novo Sócio"
+                setTimeout(() => {
+                    document.getElementById('btn-novo-socio')?.addEventListener('click', () => {
+                        carregarConteudo('cadastro');
+                    });
+                }, 0);
                 return html;
             }
 
@@ -210,11 +229,11 @@
                 if (confirm('Tem certeza que deseja excluir este sócio?')) {
                     socios = socios.filter(s => s.id !== id);
                     salvarLocalStorage();
-                    carregarConteudo('dashboard');
+                    carregarConteudo('home');
                 }
             };
 
-            // ---------- FORMULÁRIO DE CADASTRO ----------
+            // ---------- FORMULÁRIO DE CADASTRO (com novo campo Presidente que filiou) ----------
             function gerarFormularioCadastro(socio = null) {
                 const isEdicao = socio !== null;
                 const title = isEdicao ? 'Editar Sócio' : 'Novo Sócio';
@@ -319,19 +338,25 @@
                                         </select>
                                     </div>
                                     <div class="col-md-3 mb-3">
-                                        <label for="telefoneCelular" class="form-label">Telefone Celular</label>
-                                        <input type="text" class="form-control" id="telefoneCelular" value="${valor('telefoneCelular')}">
+                                        <label for="presidenteFiliou" class="form-label">Presidente que filiou</label>
+                                        <input type="text" class="form-control" id="presidenteFiliou" value="${valor('presidenteFiliou')}">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-3 mb-3">
+                                        <label for="telefoneCelular" class="form-label">Telefone Celular</label>
+                                        <input type="text" class="form-control" id="telefoneCelular" value="${valor('telefoneCelular')}">
+                                    </div>
+                                    <div class="col-md-3 mb-3">
                                         <label for="cep" class="form-label">CEP</label>
                                         <input type="text" class="form-control" id="cep" value="${valor('cep')}">
                                     </div>
-                                    <div class="col-md-5 mb-3">
+                                    <div class="col-md-6 mb-3">
                                         <label for="endereco" class="form-label">Endereço</label>
                                         <input type="text" class="form-control" id="endereco" value="${valor('endereco')}">
                                     </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-md-2 mb-3">
                                         <label for="numero" class="form-label">Número</label>
                                         <input type="text" class="form-control" id="numero" value="${valor('numero')}">
@@ -340,17 +365,15 @@
                                         <label for="complemento" class="form-label">Complemento</label>
                                         <input type="text" class="form-control" id="complemento" value="${valor('complemento')}">
                                     </div>
-                                </div>
-                                <div class="row">
                                     <div class="col-md-4 mb-3">
                                         <label for="bairro" class="form-label">Bairro</label>
                                         <input type="text" class="form-control" id="bairro" value="${valor('bairro')}">
                                     </div>
-                                    <div class="col-md-4 mb-3">
+                                    <div class="col-md-2 mb-3">
                                         <label for="cidade" class="form-label">Cidade</label>
                                         <input type="text" class="form-control" id="cidade" value="${valor('cidade')}">
                                     </div>
-                                    <div class="col-md-4 mb-3">
+                                    <div class="col-md-2 mb-3">
                                         <label for="estado" class="form-label">Estado</label>
                                         <input type="text" class="form-control" id="estado" value="${valor('estado')}">
                                     </div>
@@ -366,14 +389,14 @@
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary">${buttonText}</button>
-                                <button type="button" class="btn btn-secondary" onclick="carregarConteudo('dashboard')">Cancelar</button>
+                                <button type="button" class="btn btn-secondary" onclick="carregarConteudo('home')">Cancelar</button>
                             </form>
                         </div>
                     </div>
                 `;
             }
 
-            // Event listener para o formulário de cadastro (delegado)
+            // Event listener para o formulário de cadastro
             document.addEventListener('submit', function(e) {
                 if (e.target && e.target.id === 'form-socio') {
                     e.preventDefault();
@@ -398,6 +421,7 @@
                 const filiadoDesde = document.getElementById('filiadoDesde').value;
                 const classificacao = document.getElementById('classificacao').value;
                 const situacao = document.getElementById('situacao').value;
+                const presidenteFiliou = document.getElementById('presidenteFiliou').value;
                 const telefoneCelular = document.getElementById('telefoneCelular').value;
                 const cep = document.getElementById('cep').value;
                 const endereco = document.getElementById('endereco').value;
@@ -412,7 +436,7 @@
 
                 const salvarDados = (foto) => {
                     const socio = {
-                        id: id ? parseInt(id) : Date.now(),
+                        id: id ? parseInt(id) : gerarNovoId(),
                         nomeCompleto,
                         apelido,
                         rg,
@@ -428,6 +452,7 @@
                         filiadoDesde,
                         classificacao,
                         situacao,
+                        presidenteFiliou,
                         telefoneCelular,
                         cep,
                         endereco,
@@ -450,7 +475,7 @@
                     }
 
                     salvarLocalStorage();
-                    carregarConteudo('dashboard');
+                    carregarConteudo('home');
                     alert('Sócio salvo com sucesso!');
                 };
 
@@ -465,7 +490,7 @@
                 }
             }
 
-            // ---------- MENSALIDADES ----------
+            // ---------- MENSALIDADES (igual, mas ajustado para chamadas globais) ----------
             function gerarTelaMensalidades() {
                 let html = `
                     <div class="row mt-4">
@@ -621,7 +646,7 @@
                 doc.save(`comprovante_${socio.nomeCompleto}_${mesAno}.pdf`);
             };
 
-            // ---------- CARTEIRINHA ----------
+            // ---------- CARTEIRINHA (com dimensões de cartão de crédito) ----------
             function gerarTelaCarteirinha() {
                 let html = `
                     <div class="row mt-4">
@@ -661,47 +686,65 @@
 
             window.gerarCarteirinha = function(socioId) {
                 const socio = buscarSocioPorId(socioId);
+                // Dimensões do cartão de crédito (CR80) em mm: 85.6mm x 53.98mm
+                // Vamos criar um elemento com essas dimensões em pixels (considerando 96 DPI: 1mm = 3.78px aproximadamente)
+                const widthMm = 85.6;
+                const heightMm = 53.98;
+                const pxPerMm = 3.78; // 96 DPI / 25.4
+                const widthPx = Math.round(widthMm * pxPerMm);
+                const heightPx = Math.round(heightMm * pxPerMm);
+
                 const carteirinhaDiv = document.createElement('div');
                 carteirinhaDiv.id = 'carteirinha-temp';
-                carteirinhaDiv.style.width = '300px';
-                carteirinhaDiv.style.padding = '20px';
+                carteirinhaDiv.style.width = widthPx + 'px';
+                carteirinhaDiv.style.height = heightPx + 'px';
+                carteirinhaDiv.style.padding = '5px';
                 carteirinhaDiv.style.border = '2px solid #000';
                 carteirinhaDiv.style.borderRadius = '10px';
                 carteirinhaDiv.style.backgroundColor = '#fff';
                 carteirinhaDiv.style.fontFamily = 'Poppins, sans-serif';
+                carteirinhaDiv.style.fontSize = '10px';
+                carteirinhaDiv.style.display = 'flex';
+                carteirinhaDiv.style.flexDirection = 'column';
+                carteirinhaDiv.style.justifyContent = 'center';
+                carteirinhaDiv.style.alignItems = 'center';
                 carteirinhaDiv.style.position = 'fixed';
                 carteirinhaDiv.style.top = '-1000px';
                 carteirinhaDiv.style.left = '-1000px';
                 carteirinhaDiv.innerHTML = `
-                    <div style="text-align: center;">
-                        <h3>Sociedade Recreativa</h3>
-                        <h4>Parque Nilo dos Santos</h4>
-                        <hr>
-                        ${socio.foto ? `<img src="${socio.foto}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 5px;">` : '<div style="width:80px;height:80px;background:#ccc;margin:auto;">Sem Foto</div>'}
-                        <p><strong>${socio.nomeCompleto}</strong></p>
-                        <p>CPF: ${socio.cpf || '---'}</p>
-                        <p>Nº Sócio: ${socio.id}</p>
-                        <p>Validade: ${new Date().getFullYear() + 1}</p>
+                    <div style="text-align: center; width: 100%;">
+                        <h3 style="font-size: 14px; margin: 0;">Sociedade Recreativa</h3>
+                        <h4 style="font-size: 12px; margin: 0;">Parque Nilo dos Santos</h4>
+                        <hr style="margin: 5px 0;">
+                        ${socio.foto ? `<img src="${socio.foto}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 5px;">` : '<div style="width:40px;height:40px;background:#ccc;margin:auto;">Sem Foto</div>'}
+                        <p style="margin: 2px 0;"><strong>${socio.nomeCompleto}</strong></p>
+                        <p style="margin: 2px 0;">CPF: ${socio.cpf || '---'}</p>
+                        <p style="margin: 2px 0;">Nº ${socio.id}</p>
+                        <p style="margin: 2px 0;">Validade: ${new Date().getFullYear() + 1}</p>
                     </div>
                 `;
                 document.body.appendChild(carteirinhaDiv);
 
-                html2canvas(carteirinhaDiv).then(canvas => {
+                html2canvas(carteirinhaDiv, {
+                    scale: 2, // Melhor qualidade
+                    backgroundColor: '#ffffff'
+                }).then(canvas => {
                     const imgData = canvas.toDataURL('image/png');
                     const { jsPDF } = window.jspdf;
+                    // Criar PDF com as dimensões exatas em mm
                     const pdf = new jsPDF({
                         orientation: 'portrait',
-                        unit: 'px',
-                        format: [canvas.width, canvas.height]
+                        unit: 'mm',
+                        format: [widthMm, heightMm]
                     });
-                    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+                    pdf.addImage(imgData, 'PNG', 0, 0, widthMm, heightMm);
                     pdf.save(`carteirinha_${socio.nomeCompleto}.pdf`);
 
                     document.body.removeChild(carteirinhaDiv);
                 });
             };
 
-            // ---------- RELATÓRIOS ----------
+            // ---------- RELATÓRIOS (corrigido para exibir resultados) ----------
             function gerarTelaRelatorios() {
                 return `
                     <div class="row mt-4">
@@ -741,14 +784,14 @@
                         break;
                     case 'adimplentes':
                         listaFiltrada = socios.filter(s => {
-                            if (!s.mensalidades) return false;
+                            if (!s.mensalidades || s.mensalidades.length === 0) return false;
                             const mensalidadeAtual = s.mensalidades.find(m => m.mesAno === mesAnoAtual);
                             return mensalidadeAtual && mensalidadeAtual.pago;
                         });
                         break;
                     case 'inadimplentes':
                         listaFiltrada = socios.filter(s => {
-                            if (!s.mensalidades) return true;
+                            if (!s.mensalidades || s.mensalidades.length === 0) return true;
                             const mensalidadeAtual = s.mensalidades.find(m => m.mesAno === mesAnoAtual);
                             return !mensalidadeAtual || !mensalidadeAtual.pago;
                         });
@@ -772,24 +815,28 @@
                         </thead>
                         <tbody>
                 `;
-                listaFiltrada.forEach(s => {
-                    html += `
-                        <tr>
-                            <td>${s.nomeCompleto}</td>
-                            <td>${s.classificacao || ''}</td>
-                            <td>${s.situacao || ''}</td>
-                        </tr>
-                    `;
-                });
+                if (listaFiltrada.length === 0) {
+                    html += `<tr><td colspan="3" class="text-center">Nenhum sócio encontrado.</td></tr>`;
+                } else {
+                    listaFiltrada.forEach(s => {
+                        html += `
+                            <tr>
+                                <td>${s.nomeCompleto}</td>
+                                <td>${s.classificacao || ''}</td>
+                                <td>${s.situacao || ''}</td>
+                            </tr>
+                        `;
+                    });
+                }
                 html += `</tbody></table>`;
 
                 document.getElementById('resultado-relatorio').innerHTML = html;
             };
 
             // ---------- EVENTOS DE MENU ----------
-            document.getElementById('link-dashboard').addEventListener('click', (e) => {
+            document.getElementById('link-home').addEventListener('click', (e) => {
                 e.preventDefault();
-                carregarConteudo('dashboard');
+                carregarConteudo('home');
             });
             document.getElementById('link-cadastro').addEventListener('click', (e) => {
                 e.preventDefault();
@@ -818,8 +865,8 @@
                 }
             });
 
-            // Iniciar com dashboard
-            carregarConteudo('dashboard');
+            // Iniciar com home
+            carregarConteudo('home');
         })();
     </script>
 </body>
